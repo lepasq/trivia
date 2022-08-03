@@ -1,52 +1,45 @@
 package com.adaptionsoft.games.uglytrivia;
 
+import com.adaptionsoft.games.uglytrivia.question.Question;
+import com.adaptionsoft.games.uglytrivia.question.QuestionFactory;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Game {
-    ArrayList players = new ArrayList();
+    ArrayList<String> players = new ArrayList<>();
     int[] places = new int[6];
     int[] purses  = new int[6];
     boolean[] inPenaltyBox  = new boolean[6];
     
-    LinkedList popQuestions = new LinkedList();
-    LinkedList scienceQuestions = new LinkedList();
-    LinkedList sportsQuestions = new LinkedList();
-    LinkedList rockQuestions = new LinkedList();
+    LinkedList<String> popQuestions = new LinkedList<>();
+    LinkedList<String> scienceQuestions = new LinkedList<>();
+    LinkedList<String> sportsQuestions = new LinkedList<>();
+    LinkedList<String> rockQuestions = new LinkedList<>();
     
     int currentPlayer = 0;
     boolean isGettingOutOfPenaltyBox;
+	QuestionFactory factory = new QuestionFactory();
     
-    public  Game(){
-    	for (int i = 0; i < 50; i++) {
-			popQuestions.addLast("Pop Question " + i);
-			scienceQuestions.addLast(("Science Question " + i));
-			sportsQuestions.addLast(("Sports Question " + i));
-			rockQuestions.addLast(createRockQuestion(i));
-    	}
-    }
-
-	public String createRockQuestion(int index){
-		return "Rock Question " + index;
-	}
-	
-	public boolean isPlayable() {
-		return (howManyPlayers() >= 2);
+    public Game(){
+		createQuestionsDeck();
 	}
 
-	public boolean add(String playerName) {
-		
-		
+	private void createQuestionsDeck() {
+		popQuestions = factory.getQuestions(Question.POP, 50);
+		scienceQuestions = factory.getQuestions(Question.SCIENCE, 50);
+		rockQuestions = factory.getQuestions(Question.ROCK, 50);
+		sportsQuestions = factory.getQuestions(Question.SPORTS, 50);
+	}
+
+	public void add(String playerName) {
 	    players.add(playerName);
 	    places[howManyPlayers()] = 0;
 	    purses[howManyPlayers()] = 0;
 	    inPenaltyBox[howManyPlayers()] = false;
-	    
-	    System.out.println(playerName + " was added");
-	    System.out.println("They are player number " + players.size());
-		return true;
+	    System.out.println(playerName + " joined as number " + players.size());
 	}
-	
+
 	public int howManyPlayers() {
 		return players.size();
 	}
